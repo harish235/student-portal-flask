@@ -27,6 +27,7 @@ def grade_assignment(p, incoming_payload):
     graded_assignment = Assignment.mark_grade(
         _id=grade_assignment_payload.id,
         grade=grade_assignment_payload.grade,
+        teacher_id=None, 
         auth_principal=p
     )
     db.session.commit()
