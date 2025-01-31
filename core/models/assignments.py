@@ -78,6 +78,11 @@ class Assignment(db.Model):
         assertions.assert_found(assignment, 'No assignment with this id was found')
         assertions.assert_valid(grade is not None, 'assignment with empty grade cannot be graded')
 
+        # Restrict principals from grading assignments in DRAFT state
+        if auth_principal.principal_id is not None:
+            assertions.assert_valid(assignment.state != AssignmentStateEnum.DRAFT, 
+                                    "A principal cannot grade an assignment in the DRAFT state")
+
         assignment.grade = grade
         assignment.state = AssignmentStateEnum.GRADED
         db.session.flush()
